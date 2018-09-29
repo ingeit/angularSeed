@@ -6,6 +6,7 @@ import {
   Validators
 } from '@angular/forms';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,10 @@ export class LoginComponent implements OnInit {
   //   }
   // }
 
-  constructor(private fb: FormBuilder, public authSrv: AuthService) {
+  constructor(private fb: FormBuilder, public authSrv: AuthService, private router: Router) {
+    if (localStorage.getItem('loggedIn')) {
+      this.router.navigate(['/dashboard']);
+    }
   }
 
   setLogged() {
