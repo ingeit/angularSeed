@@ -1,0 +1,44 @@
+<div nz-row nzType="flex" nzJustify="center" nzAlign="middle" style="height: 100%">
+  <div nz-col nzSpan="20">
+    <nz-card nzTitle="Form">
+
+      <nz-steps [nzCurrent]="current">
+        <nz-step nzTitle="Upload"></nz-step>
+        <nz-step nzTitle="Config"></nz-step>
+        <nz-step nzTitle="Progress"></nz-step>
+        <nz-step nzTitle="Done"></nz-step>
+      </nz-steps>
+
+      <div class="steps-content" [ngSwitch]="current">
+        <div *ngSwitchCase="0">
+          <nz-upload nzType="drag" [nzCustomRequest]="customReq" [nzLimit]="1" [nzAccept]="'.xlsx, .xls'"
+            [nzShowUploadList]="false" [hidden]="disableUpload" (nzChange)="handleChange($event)">
+            <p class="ant-upload-drag-icon" *ngIf="!disableUpload">
+              <i class="anticon anticon-inbox"></i>
+            </p>
+            <p class="ant-upload-text" *ngIf="!disableUpload">Click or drag file to this area to upload</p>
+          </nz-upload>
+          <p class="ant-upload-drag-icon" *ngIf="disableUpload">
+            <i class="anticon anticon-file-excel"></i>
+          </p>
+          <p class="ant-upload-text" *ngIf="disableUpload">{{excelFile?.name}}</p>
+          <i class="anticon anticon-delete delete" (click)="deleteFile()"></i>
+        </div>
+        <div *ngSwitchCase="1">1</div>
+        <div *ngSwitchCase="2">2</div>
+        <div *ngSwitchCase="3">3</div>
+      </div>
+      <div class="steps-action">
+        <button nz-button nzType="default" (click)="pre()" *ngIf="current > 0">
+          <span>Previous</span>
+        </button>
+        <button nz-button nzType="default" (click)="next()" *ngIf="current < 3">
+          <span>Next</span>
+        </button>
+        <button nz-button nzType="primary" (click)="done()" *ngIf="current === 3">
+          <span>Done</span>
+        </button>
+      </div>
+    </nz-card>
+  </div>
+</div>

@@ -11,13 +11,15 @@ import en from '@angular/common/locales/en';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AppRoutingModule } from './/app-routing.module';
+import { StepsComponent } from './steps/steps.component';
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    StepsComponent
   ],
   imports: [
     BrowserModule,
