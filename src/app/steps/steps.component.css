@@ -2,15 +2,14 @@
       .steps-content {
         margin-top: 16px;
         border-radius: 6px;
-        min-height: 200px;
-        text-align: center;
-        padding-top: 80px;
+        min-height: 175px;
+        padding-top: 20px;
       }
 
-      .steps-action {
-        margin-top: 24px;
+      .steps-action{
+        text-align:end;
       }
-
+      
       button {
         margin-right: 8px;
       }

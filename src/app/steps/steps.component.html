@@ -22,7 +22,7 @@
             <i class="anticon anticon-file-excel"></i>
           </p>
           <p class="ant-upload-text" *ngIf="disableUpload">{{excelFile?.name}}</p>
-          <i class="anticon anticon-delete delete" (click)="deleteFile()"></i>
+          <i class="anticon anticon-delete delete" *ngIf="disableUpload" (click)="deleteFile()"></i>
         </div>
         <div *ngSwitchCase="1">
           <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
