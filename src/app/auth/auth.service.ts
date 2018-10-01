@@ -5,11 +5,11 @@ import { tap, delay } from 'rxjs/operators';
 
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json'
   })
 };
 
-const urlServidor = 'http://ingeit.ddns.net/couchdb/angular_seed'; // en caso de couchdb
+const urlServidor = 'https://ingeit.ddns.net/couchdb/angular_seed'; // en caso de couchdb
 
 @Injectable({
   providedIn: 'root',
@@ -42,18 +42,22 @@ export class AuthService {
     };
     return this.http.post(`${urlServidor}/_find/`, JSON.stringify(find), httpOptions).toPromise()
       .then((res: any) => {
+        console.log('TCL: AuthService -> buscarCoincidencias -> res', res);
         if (res.docs.length !== 0) {
+          console.log('TCL: AuthService -> buscarCoincidencias -> res', res);
           // el mail o el usuario esta en uso
           res.docs.forEach(res => {
             if (res.email === usuario.email) {
-              return Promise.reject('El email ya se encuentra en uso');
+
+              Promise.reject('El email ya se encuentra en uso');
+              
             } else {
-              return Promise.reject('El nombre de usuario ya se encuentra en uso');
+              Promise.reject('El nombre de usuario ya se encuentra en uso');
             }
           });
         }
         // no existen coincidencias en email o username
-        return Promise.resolve();
+        Promise.resolve();
       });
   }
 
