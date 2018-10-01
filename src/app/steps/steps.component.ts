@@ -29,15 +29,7 @@ export class StepsComponent {
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      email: [null, [Validators.email]],
-      password: [null, [Validators.required]],
-      checkPassword: [null, [Validators.required]],
-      nickname: [null, [Validators.required]],
-      phoneNumberPrefix: ['+86'],
-      phoneNumber: [null, [Validators.required]],
-      website: [null, [Validators.required]],
-      captcha: [null, [Validators.required]],
-      agree: [false]
+      nickname: [null, [Validators.required]]
     });
   }
 

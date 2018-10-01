@@ -1,20 +1,39 @@
+.steps-content {
+    margin-top: 16px;
+    border-radius: 6px;
+    padding-top: 20px;
+}
 
-      .steps-content {
-        margin-top: 16px;
-        border-radius: 6px;
-        min-height: 175px;
-        padding-top: 20px;
-      }
+.steps-content>div {
+    margin-bottom: 20px;
+}
 
-      .steps-action{
-        text-align:end;
-      }
-      
-      button {
-        margin-right: 8px;
-      }
+.steps-action {
+    text-align: end;
+}
 
-      .delete{
-        
-      }
-    
+button {
+    margin-right: 8px;
+}
+
+.file {
+    text-align: center;
+    position: relative;
+    max-width: 100px;
+    margin: 0 auto;
+}
+
+.file .ant-upload-drag-icon {
+    font-size: 70px;
+    margin-bottom: 0;
+}
+
+.file .delete {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 20px;
+}
+.file .delete:hover {
+  color:red;
+}
