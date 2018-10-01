@@ -1,4 +1,5 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,6 +11,10 @@ export class DashboardComponent {
   triggerTemplate = null;
   @ViewChild('trigger') customTrigger: TemplateRef<void>;
 
+  constructor(private router: Router){
+
+  }
+
   /** custom trigger can be TemplateRef **/
   changeTrigger(): void {
     this.triggerTemplate = this.customTrigger;
@@ -18,5 +23,6 @@ export class DashboardComponent {
   logout() {
     console.log(false)
     localStorage.setItem('loggedIn', 'false');
+    this.router.navigate(['/login']);
   }
 }
