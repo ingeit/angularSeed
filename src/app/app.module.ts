@@ -5,14 +5,20 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
+import { NgZorroAntdModule, NZ_I18N, es_ES } from 'ng-zorro-antd';
 import { registerLocaleData } from '@angular/common';
-import en from '@angular/common/locales/en';
-import { LoginComponent } from './login/login.component';
+import es from '@angular/common/locales/es';
+
+// Componentes
+import { LoginComponent } from './auth/login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { StepsComponent } from './steps/steps.component';
-registerLocaleData(en);
+
+// Providers
+import { AuthService } from './auth/auth.service';
+
+registerLocaleData(es);
 
 @NgModule({
   declarations: [
@@ -30,7 +36,10 @@ registerLocaleData(en);
     NgZorroAntdModule,
     AppRoutingModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [
+    { provide: NZ_I18N, useValue: es_ES },
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
