@@ -8,6 +8,8 @@ import {
 } from '@angular/forms';
 import { Observable, Observer } from 'rxjs';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +21,9 @@ export class RegisterComponent {
   validateForm: FormGroup;
 
   constructor(private fb: FormBuilder,
-    private authSrv: AuthService
+    private authSrv: AuthService,
+    private router: Router,
+    private message: NzMessageService
   ) {
     this.validateForm = this.fb.group({
       username: ['', [Validators.required], [this.usernameAsyncValidator]],
@@ -37,6 +41,8 @@ export class RegisterComponent {
       this.authSrv.registrar(value)
         .then(res => {
           console.log('TCL: RegisterComponent -> res', res);
+          this.message.success('Usuario creado con exito', { nzDuration: 3500 })
+          this.router.navigate(['/login']);
           this.resetForm();
         })
         .catch(err => {
