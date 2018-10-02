@@ -1,66 +1,86 @@
 <div nz-row nzType="flex" nzJustify="center" nzAlign="middle" style="height: 100%">
   <div nz-col nzSpan="12">
-    <nz-card nzTitle="Registro" >
-      <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <nz-card nzTitle="Registro">
+      <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm($event,validateForm.value)">
         <nz-form-item>
-          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="nombre">Nombre</nz-form-label>
-          <nz-form-control [nzSm]="14" [nzXs]="24">
-            <input nz-input formControlName="nombre" id="nombre">
-            <nz-form-explain *ngIf="validateForm.get('nombre').dirty && validateForm.get('nombre').errors">Por favor ingrese un nombre</nz-form-explain>
-          </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="apellido">Apellido</nz-form-label>
-          <nz-form-control [nzSm]="14" [nzXs]="24">
-            <input nz-input formControlName="apellido" id="apellido">
-            <nz-form-explain *ngIf="validateForm.get('apellido').dirty && validateForm.get('apellido').errors">Por favor ingrese un apellido</nz-form-explain>
-          </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">E-mail</nz-form-label>
-          <nz-form-control [nzSm]="14" [nzXs]="24">
-            <input nz-input formControlName="email" id="email">
-            <nz-form-explain *ngIf="validateForm.get('email').dirty && validateForm.get('email').errors">Ingrese un mail valido</nz-form-explain>
-          </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>Contraseña</nz-form-label>
-          <nz-form-control [nzSm]="14" [nzXs]="24">
-            <input nz-input type="password" id="password" formControlName="password" (ngModelChange)="updateConfirmValidator()">
-            <nz-form-explain *ngIf="validateForm.get('password').dirty && validateForm.get('password').errors">Por favor ingrese una contraseña</nz-form-explain>
-          </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>Confirmar contraseña</nz-form-label>
-          <nz-form-control [nzSm]="14" [nzXs]="24">
-            <input nz-input type="password" formControlName="checkPassword" id="checkPassword">
-            <nz-form-explain *ngIf="validateForm.get('checkPassword').dirty && validateForm.get('checkPassword').errors">
-              <ng-container *ngIf="validateForm.get('checkPassword').hasError('required')">
-                Por favor confirme la contraseña
+          <nz-form-label [nzSpan]="7" nzRequired>Usuario</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzHasFeedback>
+            <input nz-input formControlName="username" placeholder="usuario">
+            <nz-form-explain *ngIf="validateForm.get('username').dirty && validateForm.get('username').errors || validateForm.get('username').pending ">
+              <ng-container *ngIf="validateForm.get('username').hasError('required')">
+                Por favor ingrese su nombre de usuario
               </ng-container>
-              <ng-container *ngIf="validateForm.get('checkPassword').hasError('confirm')">
-                Las contraseñas deben ser iguales
+              <ng-container *ngIf="validateForm.get('username').hasError('duplicated')">
+                El nombre de usuario ya se encuentra en uso
+              </ng-container>
+              <ng-container *ngIf="validateForm.get('username').pending">
+                Validando...
               </ng-container>
             </nz-form-explain>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="username" nzRequired>
-            <span>
-              Usuario
-              <nz-tooltip nzTitle="Nombre para que las demas personas te localizen">
-                <i nz-tooltip class="anticon anticon-question-circle-o"></i>
-              </nz-tooltip>
-            </span>
-          </nz-form-label>
-          <nz-form-control [nzSm]="14" [nzXs]="24">
-            <input nz-input id="username" formControlName="username">
-            <nz-form-explain *ngIf="validateForm.get('username').dirty && validateForm.get('username').errors">Por favor ingrese un nombre de usuario</nz-form-explain>
+          <nz-form-label [nzSpan]="7" nzRequired>E-Mail</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzHasFeedback>
+            <input nz-input formControlName="email" placeholder="email">
+            <nz-form-explain *ngIf="validateForm.get('email').dirty && validateForm.get('email').errors || validateForm.get('email').pending ">
+              <ng-container *ngIf="validateForm.get('email').hasError('required')">
+                Por favor ingrese su e-mail
+              </ng-container>
+              <ng-container *ngIf="validateForm.get('email').hasError('duplicated')">
+                El e-mail ya se encuentra en uso
+              </ng-container>
+              <ng-container *ngIf="validateForm.get('email').pending">
+                Validando...
+              </ng-container>
+            </nz-form-explain>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item nz-row style="margin-bottom:8px;">
-          <nz-form-control [nzSpan]="14" [nzOffset]="6">
-            <button nz-button nzType="primary">Registrarme</button>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="7" nzRequired>Contraseña</nz-form-label>
+          <div>
+            <nz-form-control [nzSpan]="12" nzHasFeedback>
+              <input nz-input type="password" formControlName="password" (ngModelChange)="validateConfirmPassword()">
+              <nz-form-explain *ngIf="validateForm.get('password').dirty&&validateForm.get('password').hasError('required')">Por
+                favor ingrese una contraseña</nz-form-explain>
+            </nz-form-control>
+          </div>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="7" nzRequired>Confirmar contraseña</nz-form-label>
+          <nz-form-control [nzSpan]="12" nzHasFeedback>
+            <input nz-input type="password" formControlName="confirm" placeholder="confirmar contraseña">
+            <nz-form-explain *ngIf="validateForm.get('confirm').dirty&&validateForm.get('confirm').errors">
+              <ng-container *ngIf="validateForm.get('confirm').hasError('required')">
+                Por favor confirme la contraseña
+              </ng-container>
+              <ng-container *ngIf="validateForm.get('confirm').hasError('confirm')">
+                Las contraseñas no coinciden
+              </ng-container>
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="7" nzRequired>Nombre</nz-form-label>
+          <nz-form-control [nzSpan]="12">
+            <input nz-input formControlName="nombre" placeholder="nombre">
+            <nz-form-explain *ngIf="validateForm.get('nombre').dirty&&validateForm.get('nombre').hasError('required')">
+              Por favor ingrese su nombre
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="7" nzRequired>Apellido</nz-form-label>
+          <nz-form-control [nzSpan]="12">
+            <input nz-input formControlName="apellido" placeholder="apellido">
+            <nz-form-explain *ngIf="validateForm.get('apellido').dirty&&validateForm.get('apellido').hasError('required')">
+              Por favor ingrese su apellido
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control [nzOffset]="7" [nzSpan]="12">
+            <button nz-button nzType="primary" [disabled]="!validateForm.valid">Registrarme</button>
           </nz-form-control>
         </nz-form-item>
       </form>

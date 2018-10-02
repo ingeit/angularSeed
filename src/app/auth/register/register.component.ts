@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
-  Validators
+  Validators,
+  ValidationErrors
 } from '@angular/forms';
+import { Observable, Observer } from 'rxjs';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -12,59 +14,93 @@ import { AuthService } from '../auth.service';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
+
   validateForm: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
+  constructor(private fb: FormBuilder,
     private authSrv: AuthService
-  ) { }
+  ) {
+    this.validateForm = this.fb.group({
+      username: ['', [Validators.required], [this.usernameAsyncValidator]],
+      email: ['', [ Validators.required,  Validators.email], [this.emailAsyncValidator]],
+      password: ['', [Validators.required]],
+      confirm: ['', [this.confirmValidator]],
+      nombre: ['', [Validators.required]],
+      apellido: ['', [Validators.required]]
+    });
+  }
 
-
-  submitForm(): void {
-    for (const i in this.validateForm.controls) {
-      this.validateForm.controls[i].markAsDirty();
-      this.validateForm.controls[i].updateValueAndValidity();
-    }
+  submitForm = ($event, value) => {
+    $event.preventDefault();
     if (this.validateForm.valid) {
-      this.authSrv.register(this.validateForm.value)
-      .then(res =>{
-      console.log('TCL: RegisterComponent -> res', res);
+      this.authSrv.registrar(value)
+        .then(res => {
+          console.log('TCL: RegisterComponent -> res', res);
+          this.resetForm();
+        })
+        .catch(err => {
+          console.log('TCL: RegisterComponent -> err', err);
 
-      })
-      .catch(err =>{
-      console.log('TCL: RegisterComponent -> err', err);
-        
-      })
+        })
+    }
+  };
+
+  resetForm(): void {
+   this.validateForm.reset();
+    for (const key in this.validateForm.controls) {
+      this.validateForm.controls[key].markAsPristine();
+      this.validateForm.controls[key].updateValueAndValidity();
     }
   }
 
-  updateConfirmValidator(): void {
-    /** wait for refresh value */
-    Promise.resolve().then(() => this.validateForm.controls.checkPassword.updateValueAndValidity());
+  validateConfirmPassword(): void {
+    setTimeout(() => this.validateForm.controls.confirm.updateValueAndValidity());
   }
 
-  confirmationValidator = (control: FormControl): { [s: string]: boolean } => {
+  usernameAsyncValidator = (control: FormControl) => Observable.create((observer: Observer<ValidationErrors>) => {
+    setTimeout(() => {
+      const selector = {
+        username: control.value
+      }
+      this.authSrv.buscarCoincidencias(selector)
+        .then(res => {
+          // no hay coincidencias
+          observer.next(null);
+          observer.complete();
+        })
+        .catch(err => {
+          // ya existe
+          observer.next({ error: true, duplicated: true });
+          observer.complete();
+        });
+    }, 200);
+  });
+
+  emailAsyncValidator = (control: FormControl) => Observable.create((observer: Observer<ValidationErrors>) => {
+    setTimeout(() => {
+      const selector = {
+        email: control.value
+      }
+      this.authSrv.buscarCoincidencias(selector)
+        .then(res => {
+          // no hay coincidencias
+          observer.next(null);
+          observer.complete();
+        })
+        .catch(err => {
+          // ya existe
+          observer.next({ error: true, duplicated: true });
+          observer.complete();
+        });
+    }, 200);
+  });
+
+  confirmValidator = (control: FormControl): { [s: string]: boolean } => {
     if (!control.value) {
       return { required: true };
     } else if (control.value !== this.validateForm.controls.password.value) {
       return { confirm: true, error: true };
     }
-  }
-
-  getCaptcha(e: MouseEvent): void {
-    e.preventDefault();
-  }
-
-  ngOnInit(): void {
-    this.validateForm = this.fb.group({
-      nombre: [null, [Validators.required]],
-      apellido: [null, [Validators.required]],
-      email: [null, [Validators.email]],
-      password: [null, [Validators.required]],
-      checkPassword: [null, [Validators.required, this.confirmationValidator]],
-      username: [null, [Validators.required]],
-    });
-  }
-
+  };
 }

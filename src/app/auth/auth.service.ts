@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
+import * as md5 from 'md5';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -23,46 +24,32 @@ export class AuthService {
   constructor(private http: HttpClient) {
   }
 
-  register(usuario) {
-    return this.buscarCoincidencias(usuario)
-      .then(() => {
-        return this.insertar(usuario)
-      })
+  buscarCoincidencias(selector) {
+    return new Promise((resolve, reject) => {
+      const find = {
+        selector
+      };
+      this.http.post(`${urlServidor}/_find/`, JSON.stringify(find), httpOptions).toPromise()
+        .then((res: any) => {
+          if (res.docs.length !== 0) {
+            // el username esta en uso
+            res.docs.forEach(res => {
+              if (res.clase === 'usuario') {
+                reject();
+              }
+            });
+          }
+          // no existen coincidencias en email o username
+          resolve();
+        });
+    });
   }
 
-  buscarCoincidencias(usuario) {
-    let find: any;
-    find = {
-      selector: {
-        $or: [
-          { email: usuario.email },
-          { username: usuario.username }
-        ]
-      }
-    };
-    return this.http.post(`${urlServidor}/_find/`, JSON.stringify(find), httpOptions).toPromise()
-      .then((res: any) => {
-        console.log('TCL: AuthService -> buscarCoincidencias -> res', res);
-        if (res.docs.length !== 0) {
-          console.log('TCL: AuthService -> buscarCoincidencias -> res', res);
-          // el mail o el usuario esta en uso
-          res.docs.forEach(res => {
-            if (res.email === usuario.email) {
-
-              Promise.reject('El email ya se encuentra en uso');
-              
-            } else {
-              Promise.reject('El nombre de usuario ya se encuentra en uso');
-            }
-          });
-        }
-        // no existen coincidencias en email o username
-        Promise.resolve();
-      });
-  }
-
-  insertar(usuario) {
+  registrar(usuario) {
     usuario.clase = 'usuario';
+    delete usuario.confirm;
+    usuario.password = md5(usuario.password);
+    console.log('TCL: AuthService -> registrar -> usuario', usuario);
     return this.http.post(`${urlServidor}/`, JSON.stringify(usuario), httpOptions).toPromise()
   }
 
