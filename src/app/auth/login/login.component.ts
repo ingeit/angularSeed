@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-login',
@@ -16,29 +17,44 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   public validateForm: FormGroup;
 
-  // submitForm(): void {
-  //   for (let i of this.validateForm.controls) {
-  //     this.validateForm.controls[ i ].markAsDirty();
-  //     this.validateForm.controls[ i ].updateValueAndValidity();
-  //   }
-  // }
-
-  constructor(private fb: FormBuilder, public authSrv: AuthService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    public authSrv: AuthService,
+    private router: Router,
+    private message: NzMessageService
+  ) {
     if (localStorage.getItem('loggedIn')) {
       this.router.navigate(['/dashboard']);
     }
   }
 
-  setLogged() {
-    this.authSrv.isLoggedIn = true;
-    localStorage.setItem('loggedIn', 'true');
-  }
-
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      userName: [null, [Validators.required]],
+      username: [null, [Validators.required]],
       password: [null, [Validators.required]],
       remember: [true]
     });
   }
+
+  submitForm(credenciales) {
+    console.log('TCL: LoginComponent -> submitForm -> value', credenciales);
+    this.authSrv.login(credenciales)
+      .then(res => {
+        console.log('TCL: LoginComponent -> submitForm -> res', res);
+        if (res) {
+          this.router.navigate(['/dashboard']);
+          this.message.success('Ha iniciado sesión correctamente', { nzDuration: 3500 })
+        } else {
+          this.validateForm.reset();
+          this.message.warning('No se pudo iniciar sesión. Compruebe el nombre de usuario y contraseña', { nzDuration: 3500 })
+        }
+      })
+      .catch(() => {
+      })
+  }
+
+  setLogged() {
+
+  }
+
 }

@@ -53,11 +53,29 @@ export class AuthService {
     return this.http.post(`${urlServidor}/`, JSON.stringify(usuario), httpOptions).toPromise()
   }
 
-  login(): Observable<boolean> {
-    return of(true).pipe(
-      delay(1000),
-      tap(val => this.isLoggedIn = true)
-    );
+  login(credenciales) {
+
+    const find = {
+      selector: {
+        $and: [
+          { username: credenciales.username },
+          { password: md5(credenciales.password) },
+          { clase: 'usuario' }
+        ]
+      }
+    };
+    return this.http.post(`${urlServidor}/_find/`, JSON.stringify(find), httpOptions).toPromise()
+      .then((res: any) => {
+        if (res.docs.length !== 0) {
+          this.isLoggedIn = true;
+          localStorage.setItem('loggedIn', 'true');
+          return true
+        } else {
+          this.isLoggedIn = false;
+          localStorage.setItem('loggedIn', 'false');
+          return false
+        }
+      });
   }
 
   logout(): void {
