@@ -33,6 +33,9 @@
           </nz-breadcrumb>
           <div style="padding:24px; background: #fff; min-height: 360px;">
             <button (click)="logout()">Logout</button>
+            <button [routerLink]="['index']">index</button>
+            <button [routerLink]="['form']">register</button>
+            <router-outlet></router-outlet>
           </div>
         </nz-content>
         <nz-footer style="text-align: center;">Ant Design ©2017 Implement By Angular</nz-footer>
