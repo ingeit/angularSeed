@@ -36,9 +36,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  submitForm(credenciales) {
-    console.log('TCL: LoginComponent -> submitForm -> value', credenciales);
-    this.authSrv.login(credenciales)
+  submitForm() {
+    this.authSrv.login(this.validateForm.value)
       .then(res => {
         console.log('TCL: LoginComponent -> submitForm -> res', res);
         if (res) {
