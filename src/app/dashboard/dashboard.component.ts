@@ -25,4 +25,8 @@ export class DashboardComponent {
     localStorage.setItem('loggedIn', 'false');
     this.router.navigate(['/login']);
   }
+  
+  register(){
+    this.router.navigate(['/dashboard/form']);
+  }
 }
