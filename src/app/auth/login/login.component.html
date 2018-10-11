@@ -1,37 +1,39 @@
 <div nz-row nzType="flex" nzJustify="center" nzAlign="middle" style="height: 100%">
-  <div nz-col nzSpan="12">
-    <nz-card nzTitle="Login">
-        <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm(validateForm.value)">
-          <nz-form-item>
-            <nz-form-control>
-              <nz-input-group nzPrefixIcon="anticon anticon-user">
-                <input type="text" nz-input formControlName="username" placeholder="Username">
-              </nz-input-group>
-              <nz-form-explain *ngIf="validateForm.get('username').dirty && validateForm.get('username').errors">Please
-                input your username!</nz-form-explain>
-            </nz-form-control>
-          </nz-form-item>
-          <nz-form-item>
-            <nz-form-control>
-              <nz-input-group nzPrefixIcon="anticon anticon-lock">
-                <input type="password" nz-input formControlName="password" placeholder="Password">
-              </nz-input-group>
-              <nz-form-explain *ngIf="validateForm.get('password').dirty && validateForm.get('password').errors">Please
-                input your Password!</nz-form-explain>
-            </nz-form-control>
-          </nz-form-item>
-          <nz-form-item>
-            <nz-form-control>
-              <label nz-checkbox formControlName="remember">
-                <span>Remember me</span>
-              </label>
-              <a class="login-form-forgot" class="login-form-forgot" (click)="setLogged()">Forgot password</a>
-              <button nz-button class="login-form-button" [disabled]="!validateForm.valid" [nzType]="'primary'">Log in</button>
-              O
-              <a routerLink="/register">Registrarme</a>
-            </nz-form-control>
-          </nz-form-item>
-        </form>
-    </nz-card>
+  <div nz-col nzSpan="20" style="max-width: 900px;min-height: 592px;">
+    <div nz-col nzSpan="10" class="form-card__img" style="background-image: url('../assets/logo.jpg');">
+    </div>
+    <div nz-col nzSpan="14">
+      <nz-card style="min-height: 592px;padding: 4.5rem!important;border-radius: 0 0.375rem 0.375rem 0;">
+        <h2>Login to continue</h2>
+        <p class="lead">Welcome back, sign in with your CORP account</p>
+          <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+            <nz-form-item>
+              <nz-form-control>
+                <nz-input-group nzPrefixIcon="anticon anticon-user">
+                  <input type="text" nz-input formControlName="username" placeholder="Username">
+                </nz-input-group>
+                <nz-form-explain *ngIf="validateForm.get('username').dirty && validateForm.get('username').errors">Please
+                  input your username!</nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-control>
+                <nz-input-group nzPrefixIcon="anticon anticon-lock">
+                  <input type="password" nz-input formControlName="password" placeholder="Password">
+                </nz-input-group>
+                <nz-form-explain *ngIf="validateForm.get('password').dirty && validateForm.get('password').errors">Please
+                  input your Password!</nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-control>
+                <button nz-button class="login-form-button" [nzType]="'primary'">Log in</button>
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+          <p class="additional-info">Don't have an account yet? <a href="#/user/sign-up">Sign up</a></p>
+          <p class="additional-info">Forgot your username or password? <a href="#/user/forgot-password">Reset password</a></p>
+      </nz-card>
+    </div>
   </div>
 </div>

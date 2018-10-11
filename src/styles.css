@@ -4,3 +4,7 @@ app-login, app-root{
     min-height: 100%;
     display: block;
 }
+
+body{
+    background: #fafafa;
+}
