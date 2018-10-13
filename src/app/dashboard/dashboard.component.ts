@@ -1,5 +1,6 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,22 +12,23 @@ export class DashboardComponent {
   triggerTemplate = null;
   @ViewChild('trigger') customTrigger: TemplateRef<void>;
 
-  constructor(private router: Router){
+  constructor(
+    private router: Router,
+    private authSrv: AuthService
+  ) {
 
   }
-
+  
   /** custom trigger can be TemplateRef **/
   changeTrigger(): void {
     this.triggerTemplate = this.customTrigger;
   }
 
   logout() {
-    console.log(false)
-    localStorage.setItem('loggedIn', 'false');
-    this.router.navigate(['/login']);
+    this.authSrv.logout();
   }
-  
-  register(){
-    this.router.navigate(['/dashboard/form']);
+
+  establecimientos() {
+    this.router.navigate(['/dashboard/establecimientos']);
   }
 }

@@ -1,27 +1,38 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { tap, delay } from 'rxjs/operators';
-import * as md5 from 'md5';
+import { Router } from '@angular/router';
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json'
-  })
-};
-
-const urlServidor = 'https://ingeit.ddns.net/couchdb/angular_seed'; // en caso de couchdb
+const urlServidor = 'http://localhost:3000/api/auth'; // en caso de couchdb
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  isLoggedIn = false;
 
-  // store the URL so we can redirect after logging in
-  redirectUrl: string;
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {
+  }
 
-  constructor(private http: HttpClient) {
+  login(credenciales) {
+    console.log('TCL: AuthService -> login -> credenciales', credenciales);
+    return this.http.post<any>(`${urlServidor}/login`, JSON.stringify(credenciales), httpOptions).toPromise()
+      .then(res => {
+        console.log('TCL: AuthService -> login -> res', res);
+        this.clearLocalStorage();
+        localStorage.setItem('idUsuario', res.respuesta[0].idUsuario);
+        localStorage.setItem('username', res.respuesta[0].username);
+        localStorage.setItem('rol', res.respuesta[0].rol);
+        localStorage.setItem('token', res.respuesta[0].token);
+        localStorage.setItem('loggedIn', 'true');
+        return Promise.resolve(res);
+      })
+      .catch(err => {
+        console.log('TCL: AuthService -> login -> err', err);
+        localStorage.setItem('loggedIn', 'false');
+        return Promise.reject(err);
+      })
   }
 
   buscarCoincidencias(selector) {
@@ -48,37 +59,21 @@ export class AuthService {
   registrar(usuario) {
     usuario.clase = 'usuario';
     delete usuario.confirm;
-    usuario.password = md5(usuario.password);
+    // usuario.password = md5(usuario.password);
     console.log('TCL: AuthService -> registrar -> usuario', usuario);
-    return this.http.post(`${urlServidor}/`, JSON.stringify(usuario), httpOptions).toPromise()
+    return this.http.post(`${urlServidor}/`, JSON.stringify(usuario)).toPromise()
   }
 
-  login(credenciales) {
 
-    const find = {
-      selector: {
-        $and: [
-          { username: credenciales.username },
-          { password: md5(credenciales.password) },
-          { clase: 'usuario' }
-        ]
-      }
-    };
-    return this.http.post(`${urlServidor}/_find/`, JSON.stringify(find), httpOptions).toPromise()
-      .then((res: any) => {
-        if (res.docs.length !== 0) {
-          this.isLoggedIn = true;
-          localStorage.setItem('loggedIn', 'true');
-          return true
-        } else {
-          this.isLoggedIn = false;
-          localStorage.setItem('loggedIn', 'false');
-          return false
-        }
-      });
-  }
 
   logout(): void {
-    this.isLoggedIn = false;
+    console.log("logout")
+    this.clearLocalStorage();
+    this.router.navigate(['/login']);
+  }
+
+  clearLocalStorage() {
+    localStorage.clear();
+    localStorage.setItem('loggedIn', 'false')
   }
 }

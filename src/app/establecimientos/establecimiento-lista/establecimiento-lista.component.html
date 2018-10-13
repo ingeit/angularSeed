@@ -1,0 +1,55 @@
+<div nz-row nzGutter='24' style="margin-bottom: 16px;">
+  <div nz-col nzSpan="12">
+    <nz-input-group nzSuffixIcon="anticon anticon-search">
+      <input type="text" [(ngModel)]="searchTermEstablecimiento" (keyup)="filtrarEstablecimientos()" nz-input
+        placeholder="Ingrese parametros de busqueda">
+    </nz-input-group>
+  </div>
+  <div nz-col style="text-align: right;" nzSpan="12">
+    <button nz-button [nzType]="'primary'" (click)="crear()">
+      <i class="anticon anticon-plus-circle-o"></i>
+      Nuevo establecimiento
+    </button>
+  </div>
+</div>
+
+<div nz-row>
+  <div nz-col>
+    <nz-table [nzPageSize]="10" nzSize="small" #filterTable [nzData]="displayData">
+      <thead (nzSortChange)="sort($event)" nzSingleSort>
+        <tr>
+          <th nzShowSort nzSortKey="cue">CUE</th>
+          <th nzShowSort nzSortKey="nombre">Nombre</th>
+          <th>Ambito</th>
+          <th>Parroquial</th>
+          <th>Estado</th>
+          <th>Accion</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of filterTable.data">
+          <td>{{data.cue}}</td>
+          <td>{{data.nombre}}</td>
+          <td>{{data.ambito}}</td>
+          <td>{{(data.parroquial === '1')? 'Si' : 'No'}}</td>
+          <td *ngIf="data.estado === 'A'" style="color: green;">Habilitada</td>
+          <td *ngIf="data.estado === 'B'" style="color: firebrick;">Deshabilitada</td>
+          <td *ngIf="data.estado === 'A'">
+            <a (click)="editar(data)">Editar</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="deshabilitar(data)">Deshabilitar</a>
+          </td>
+          <td *ngIf="data.estado === 'B'">
+            <a (click)="habilitar(data)">Habilitar</a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>
+
+<!-- Modal edit/create establecimiento -->
+<nz-modal nzWidth="700" [nzStyle]="{ top: '20px' }" [(nzVisible)]="modal" [nzTitle]="tituloModal" [nzFooter]=null nzMaskClosable="false"
+  (nzOnCancel)="cerrarModal()">
+  <app-establecimiento-modal *ngIf="modal" [establecimientoInput]="establecimiento" (mensaje)="modalEvent($event)"></app-establecimiento-modal>
+</nz-modal>

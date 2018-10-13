@@ -23,7 +23,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private message: NzMessageService
   ) {
-    if (localStorage.getItem('loggedIn')) {
+    const loggedIn = JSON.parse(localStorage.getItem('loggedIn'));
+    if (loggedIn) {
       this.router.navigate(['/dashboard']);
     }
   }
@@ -31,24 +32,23 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.validateForm = this.fb.group({
       username: [null, [Validators.required]],
-      password: [null, [Validators.required]],
-      remember: [true]
+      password: [null, [Validators.required]]
     });
   }
 
   submitForm() {
     this.authSrv.login(this.validateForm.value)
       .then(res => {
-        console.log('TCL: LoginComponent -> submitForm -> res', res);
-        if (res) {
-          this.router.navigate(['/dashboard']);
-          this.message.success('Ha iniciado sesión correctamente', { nzDuration: 3500 })
-        } else {
-          this.validateForm.reset();
-          this.message.warning('No se pudo iniciar sesión. Compruebe el nombre de usuario y contraseña', { nzDuration: 3500 })
-        }
+        this.router.navigate(['/dashboard']);
+        this.message.success('Ha iniciado sesión correctamente', { nzDuration: 3500 })
       })
-      .catch(() => {
+      .catch(err => {
+        // if (err.status >= 500) {
+        //   this.message.error('Problemas de conexion con el servidor. Intente nuevamente mas tarde', { nzDuration: 5000 })
+        // } else {
+        //   this.message.warning('Credenciales incorrectas. Compruebe los datos ingresados', { nzDuration: 5000 })
+        // }
+        // this.validateForm.reset();
       })
   }
 

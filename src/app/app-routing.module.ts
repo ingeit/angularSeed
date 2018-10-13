@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './auth/login/login.component';
-import { StepsComponent } from './steps/steps.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthService } from './auth/auth.service';
+import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { EstablecimientoListaComponent } from './establecimientos/establecimiento-lista/establecimiento-lista.component';
+import { StepsComponent } from './steps/steps.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -13,10 +14,10 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'step', component: StepsComponent },
   {
-    path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], children: [
+    path: 'dashboard', component: DashboardComponent, children: [
       { path: '', redirectTo: 'index', pathMatch: 'full' },
-      { path: 'index', component: StepsComponent },
-      { path: 'form', component: RegisterComponent },
+      // { path: 'form', component: RegisterComponent },
+      { path: 'establecimientos', component: EstablecimientoListaComponent, canActivate: [AuthGuard] },
     ]
   }
 ];

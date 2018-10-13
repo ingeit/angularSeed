@@ -1,47 +1,37 @@
-
-    <nz-layout>
-      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="triggerTemplate">
-        <div class="logo">
-        </div>
-        <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
-          <li nz-submenu>
-            <span title><i class="anticon anticon-user"></i><span class="nav-text">User</span></span>
-            <ul>
-              <li nz-menu-item>Tom</li>
-              <li nz-menu-item>Bill</li>
-              <li nz-menu-item>Alex</li>
-            </ul>
-          </li>
-          <li nz-submenu>
-            <span title><i class="anticon anticon-team"></i><span class="nav-text">Team</span></span>
-            <ul>
-              <li nz-menu-item>Team 1</li>
-              <li nz-menu-item>Team 2</li>
-            </ul>
-          </li>
-          <li (click)="register()" nz-menu-item><span><i class="anticon anticon-file"></i><span class="nav-text">register</span></span></li>
+<nz-layout>
+  <nz-sider [nzWidth]="250" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="triggerTemplate">
+    <div class="logo">
+    </div>
+    <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
+      <!-- <li nz-submenu>
+        <span title><i class="anticon anticon-user"></i><span class="nav-text">User</span></span>
+        <ul>
+          <li nz-menu-item>Tom</li>
+          <li nz-menu-item>Bill</li>
+          <li nz-menu-item>Alex</li>
         </ul>
-      </nz-sider>
-      <nz-layout>
-        <nz-header style="background: #fff; padding:0;">
-          <i class="anticon trigger" [class.anticon-menu-fold]="!isCollapsed" [class.anticon-menu-unfold]="isCollapsed" (click)="isCollapsed=!isCollapsed"></i>
-        </nz-header>
-        <nz-content style="margin:0 16px;">
-          <nz-breadcrumb style="margin:16px 0;">
-            <nz-breadcrumb-item>User</nz-breadcrumb-item>
-            <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
-          </nz-breadcrumb>
-          <div style="padding:24px; background: #fff; min-height: 360px;">
-            <button (click)="logout()">Logout</button>
-            <button [routerLink]="['index']">index</button>
-            <button [routerLink]="['form']">register</button>
-            <router-outlet></router-outlet>
-          </div>
-        </nz-content>
-        <nz-footer style="text-align: center;">Ant Design ©2017 Implement By Angular</nz-footer>
-      </nz-layout>
-    </nz-layout>
-    <ng-template #trigger>
-      <i class="anticon anticon-up"></i>
-    </ng-template>
-  
+      </li> -->
+      <!-- Forma de ruta programada -->
+      <!-- <li nz-menu-item (click)="establecimientos()"><span><i class="anticon anticon-home"></i><span class="nav-text">Establecimientos</span></span></li> -->
+      <!-- Forma de ruta mediante link por html -->
+      <li nz-menu-item [routerLink]="['establecimientos']"><span style="font-size: 17px; color: #e5e5e5"><i class="anticon anticon-home"></i><span class="nav-text">Establecimientos</span></span></li>
+      <li nz-menu-item (click)="logout()"><span style="font-size: 17px; color: #e5e5e5"><i class="anticon anticon-logout"></i><span class="nav-text">Cerrar
+            Sesion</span></span></li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <i class="anticon trigger" [class.anticon-menu-fold]="!isCollapsed" [class.anticon-menu-unfold]="isCollapsed"
+        (click)="isCollapsed=!isCollapsed"></i>
+      <span style="font-weight: 900;font-size: 20px;">SISTEMA BEG 2019</span>
+    </nz-header>
+    <nz-content style="padding:0 50px;margin-top:30px;">
+      <router-outlet></router-outlet>
+    </nz-content>
+    <nz-footer style="text-align: center;">Sistema de gestion para Boleto Estudiantil Gratiuto - Honorable Legislatura
+      Tucuman 2019</nz-footer>
+  </nz-layout>
+</nz-layout>
+<ng-template #trigger>
+  <i class="anticon anticon-up"></i>
+</ng-template>

@@ -1,0 +1,41 @@
+<form nz-form [formGroup]="formulario" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="cue">CUE</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <input style="width: 150px;" formControlName="cue" placeholder="cue" nz-input name="cue" type="text" id="cue">
+      <nz-form-explain *ngIf="formulario.get('cue').dirty && formulario.get('cue').errors">Ingrese un CUE</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="nombre">Nombre</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <input formControlName="nombre" placeholder="nombre" nz-input name="nombre" type="text" id="nombre">
+      <nz-form-explain *ngIf="formulario.get('nombre').dirty && formulario.get('nombre').errors">Ingrese un nombre</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="ambito">Ambito</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <nz-radio-group formControlName="ambito">
+        <label nz-radio nzValue="OFICIAL">OFICIAL</label>
+        <label nz-radio nzValue="PRIVADO">PRIVADO</label>
+      </nz-radio-group>
+      <nz-form-explain *ngIf="formulario.get('ambito').dirty && formulario.get('ambito').errors">Seleccione una opcion</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="parroquial">Parroquial</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <nz-radio-group formControlName="parroquial">
+        <label nz-radio nzValue="0">No</label>
+        <label nz-radio nzValue="1">Si</label>
+      </nz-radio-group>
+      <nz-form-explain *ngIf="formulario.get('parroquial').dirty && formulario.get('parroquial').errors">Seleccione una opcion</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <button nz-button [nzType]="'primary'">Guardar</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>
